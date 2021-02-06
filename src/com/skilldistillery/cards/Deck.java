@@ -1,12 +1,8 @@
 package com.skilldistillery.cards;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
-
-import com.skilldistillery.enums.drills.cards.Rank;
-import com.skilldistillery.enums.drills.cards.Suit;
 
 public class Deck {
 
@@ -35,5 +31,11 @@ public class Deck {
 	public void shuffle() {
 		Collections.shuffle(cards);;
 	}
+	//UML example has 
+	// +cardsLeftInDect():int    ??? Unsure if this is needed
+	// +dealCard(hand: Hand): void  
+//	public void dealCard(Hand hand) {
+//		
+//	}
 	
 }

@@ -1,7 +1,5 @@
 package com.skilldistillery.cards;
 
-import com.skilldistillery.enums.drills.cards.Rank;
-import com.skilldistillery.enums.drills.cards.Suit;
 
 public class Card {
 
