@@ -1,11 +1,16 @@
 package com.skilldistillery.blackjack;
 
+
+import java.util.ArrayList;
 import java.util.Scanner;
 
-import com.skilldistillery.cards.Card;
-import com.skilldistillery.cards.Deck;
+import com.skilldistillery.cards.*;
 
 public class BlackjackApplication {
+
+	private BlackjackHand playHand = new BlackjackHand();
+	private BlackjackHand dealHand = new BlackjackHand();
+	
 
 	public static void main(String[] args) {
 		Scanner kb = new Scanner(System.in);
@@ -35,29 +40,48 @@ public class BlackjackApplication {
 		 */
 		int playerCount, dealerCount;
 		Deck deck = new Deck();
+		
 		deck.shuffle();
 		Card pCard1 = deck.dealCard();
 		Card dCard1 = deck.dealCard();
+		
 		Card pCard2 = deck.dealCard();
 		Card dCard2 = deck.dealCard();
-		System.out.println(pCard1 +"\n" +pCard2);
+		
+		playHand.addCard(pCard1);
+		playHand.addCard(pCard2);
+		dealHand.addCard(dCard1);
+		dealHand.addCard(dCard2);
+		System.out.println();
+
+		System.out.println("--------------");
+		System.out.println("| Your Cards |");
+		System.out.println("--------------");
 		playerCount = pCard1.getValue() + pCard2.getValue();
-		System.out.println(playerCount);
+		System.out.println(playHand.toString() + playerCount);
+		//System.out.println(Rank.JACK.toString());
+
+	
+		System.out.println();
+
+		System.out.println("----------------");
+		System.out.println("| Dealer Cards |");
+		System.out.println("----------------");
 		
-		System.out.println(dCard1 +"\n" +dCard2);
 		dealerCount = dCard1.getValue() + dCard2.getValue();
-		System.out.println(dealerCount);
+		System.out.println(dCard1 +"\nCard value is: " + dCard1.getValue());
 		
-		System.out.println(deck.checkDeckSize());
+		
 		int blackjack = 21;
-		if(playerCount == blackjack && dealerCount == blackjack ) {
-			System.out.println("both bj, push");
+		
+		if(playHand.isBlackjack(playerCount) && dealHand.isBlackjack(dealerCount)){
+			System.out.println("Both BlackJack, push");
 		}
-		else if(playerCount ==blackjack && dealerCount != blackjack) {
+		else if(playHand.isBlackjack(playerCount) && dealHand.isBlackjack(dealerCount)) {
 			System.out.println("winner, winner chicken dinner!");
 			
 		}
-		else if(playerCount != blackjack && dealerCount == blackjack) {
+		else if(playHand.isBlackjack(playerCount) && dealHand.isBlackjack(dealerCount)) {
 			System.out.println("Dealer wins");
 		}
 		else {
@@ -66,6 +90,12 @@ public class BlackjackApplication {
 				System.out.println(playerCount);
 			}
 		}
+		
+//		pHand.isBust(playerCount);
+//		
+////		if(playerCount > 21) {
+////			
+////		}
 		
 		
 	}
@@ -92,9 +122,12 @@ public class BlackjackApplication {
 			Card playerCard = deck.dealCard();
 			playerCount = playerCard.getValue();
 			System.out.println(playerCard);
+			return playerCount;
 			
 		}
-		return playerCount;
+		else {
+			return playerCount;
+		}
 		
 	}
 	

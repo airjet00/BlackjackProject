@@ -11,11 +11,36 @@ public enum Rank {
 	}
 	
 	public int getValue() {
-		return value;
+		if(value == JACK.value) {
+			return (value +2);
+		}
+		else if(value == QUEEN.value) {
+			return (value +3);
+		}
+		else if(value == KING.value) {
+			return (value +4);
+		}
+		else {
+			return value;
+		}
 	}
 	
 	@Override
 	public String toString() {
-		return "" + value;
+		if(value == TEN.value) {
+			return "10";
+		}
+		else if(value == JACK.value) {
+			return "Jack";
+		}
+		else if(value == QUEEN.value) {
+			return "Queen";
+		}
+		else if(value == KING.value) {
+			return "King";
+		}
+		else {
+			return "" + value;
+		}
 	}
 }
