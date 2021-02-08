@@ -5,15 +5,15 @@ import java.awt.List;
 import com.skilldistillery.cards.*;
 
 public class BlackjackHand extends Hand{
-	Deck deck = new Deck();
+	//Deck deck = new Deck();
 	//Hand hand = new BlackjackHand();
 	//Card card = new Card();
 	public BlackjackHand() {}
 	
 	public String getCard(List cards) {
-		Card card = deck.dealCard();
+		//Card card = deck.dealCard();
 		
-		return card.toString();
+		return"";// card.toString();
 	}
 	public int getHandValue() {
 		
