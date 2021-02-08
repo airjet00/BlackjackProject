@@ -22,7 +22,7 @@ public class BlackjackHand extends Hand{
 	
 	public boolean isBlackjack(int count) {
 		if(count == 21) {
-			System.out.println("Winner, winner chicken dinner!");;
+			System.out.println("Winner");
 			return true;
 		}
 		else {

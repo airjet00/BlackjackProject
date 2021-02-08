@@ -10,18 +10,19 @@ public class BlackjackApplication {
 
 	private BlackjackHand playHand = new BlackjackHand();
 	private BlackjackHand dealHand = new BlackjackHand();
+	private int blackjack = 21;
+	Scanner kb = new Scanner(System.in);
 	
 
 	public static void main(String[] args) {
-		Scanner kb = new Scanner(System.in);
 		BlackjackApplication bja = new BlackjackApplication();
 		
-		bja.play(kb);
+		bja.play();
 		
-		kb.close();
+		
 	}
 
-	private void play(Scanner kb) {
+	private void play() {
 		
 		/*
 		 * 	Will deal the starting cards to player
@@ -38,59 +39,74 @@ public class BlackjackApplication {
 		 *  Compare value of player and dealer 
 		 *  to determine winner.
 		 */
-		int playerCount, dealerCount;
-		Deck deck = new Deck();
+		boolean playAgain = true;
+		while(playAgain) {
 		
-		deck.shuffle();
-		Card pCard1 = deck.dealCard();
-		Card dCard1 = deck.dealCard();
+			int playerCount, dealerCount;
+			Deck deck = new Deck();
 		
-		Card pCard2 = deck.dealCard();
-		Card dCard2 = deck.dealCard();
+			deck.shuffle();
+			Card pCard1 = deck.dealCard();
+			Card dCard1 = deck.dealCard();
 		
-		playHand.addCard(pCard1);
-		playHand.addCard(pCard2);
-		dealHand.addCard(dCard1);
-		dealHand.addCard(dCard2);
-		System.out.println();
+			Card pCard2 = deck.dealCard();
+			Card dCard2 = deck.dealCard();
+		
+			playHand.addCard(pCard1);
+			playHand.addCard(pCard2);
+			dealHand.addCard(dCard1);
+			dealHand.addCard(dCard2);
+			System.out.println();
 
-		System.out.println("--------------");
-		System.out.println("| Your Cards |");
-		System.out.println("--------------");
-		playerCount = pCard1.getValue() + pCard2.getValue();
-		System.out.println(playHand.toString() + playerCount);
-		//System.out.println(Rank.JACK.toString());
+			System.out.println("--------------");
+			System.out.println("| Your Cards |");
+			System.out.println("--------------");
+			playerCount = pCard1.getValue() + pCard2.getValue();
+			System.out.println(playHand.toString() + playerCount);
+			//System.out.println(Rank.JACK.toString());
 
 	
-		System.out.println();
+			System.out.println();
+		
+			System.out.println("----------------");
+			System.out.println("| Dealer Cards |");
+			System.out.println("----------------");
+		
+			dealerCount = dCard1.getValue() + dCard2.getValue();
+			System.out.println(dCard1 +"\nCard value is: " + dCard1.getValue());
+		
 
-		System.out.println("----------------");
-		System.out.println("| Dealer Cards |");
-		System.out.println("----------------");
+			boolean isNotBlackjack = false;
+			while(!isNotBlackjack) {
 		
-		dealerCount = dCard1.getValue() + dCard2.getValue();
-		System.out.println(dCard1 +"\nCard value is: " + dCard1.getValue());
-		
-		
-		int blackjack = 21;
-		
-		if(playHand.isBlackjack(playerCount) && dealHand.isBlackjack(dealerCount)){
-			System.out.println("Both BlackJack, push");
-		}
-		else if(playHand.isBlackjack(playerCount) && dealHand.isBlackjack(dealerCount)) {
-			System.out.println("winner, winner chicken dinner!");
+				if(playHand.isBlackjack(playerCount) && dealHand.isBlackjack(dealerCount)){
+					System.out.println("Both BlackJack, push");
+					isNotBlackjack = playAnother();
+					
+				}
+				else if(playHand.isBlackjack(playerCount) && dealHand.isBlackjack(dealerCount)) {
+					System.out.println("winner, winner chicken dinner!");
+					isNotBlackjack = playAnother();
+				}
+				else if(playHand.isBlackjack(playerCount) && dealHand.isBlackjack(dealerCount)) {
+					System.out.println("Dealer wins");
+					isNotBlackjack = playAnother();
+				}
+				else {
+					isNotBlackjack = !playHand.isBlackjack(playerCount);	
+					System.out.println();
+					}
+				}
+			playerCount = player(pCard1, pCard2, deck, playerCount);
+			System.out.println(playerCount);
+			if(playHand.isBust(playerCount)) {
+				
+				playAgain = playAnother();
+			}
+			
+			dealerCount = dealer(dCard1, dCard2, deck, dealerCount);
 			
 		}
-		else if(playHand.isBlackjack(playerCount) && dealHand.isBlackjack(dealerCount)) {
-			System.out.println("Dealer wins");
-		}
-		else {
-			while (playerCount < blackjack) {
-				playerCount += player(pCard1, pCard2, deck, kb);
-				System.out.println(playerCount);
-			}
-		}
-		
 //		pHand.isBust(playerCount);
 //		
 ////		if(playerCount > 21) {
@@ -99,8 +115,20 @@ public class BlackjackApplication {
 		
 		
 	}
+	public boolean playAnother() {
+		System.out.println("\nWould you like to play again? Y or N");
+		String play = kb.next();
+		String plays = play.toUpperCase();
+		if (plays.equals("Y")) {
+			play();
+		}
+		
+		return false;
+		
+		
+	}
 	
-	public int player(Card pCard1, Card pCard2 , Deck deck, Scanner kb) {
+	public int player(Card pCard1, Card pCard2 , Deck deck, int playerCount) {
 		/*
 		 * Will check value of cards and display
 		 * cards/value with option to hit/stay
@@ -115,13 +143,20 @@ public class BlackjackApplication {
 		 * 
 		 * return card value
 		 */
-		int playerCount = 0;
+		
 		System.out.println("would you like to hit or stay? (H or S)");
-		String hitOrStay = kb.nextLine();
-		if(hitOrStay.endsWith("H")) {
+		String hitOrStay = kb.next();
+		kb.nextLine();
+		if(hitOrStay.equals("H")) {
 			Card playerCard = deck.dealCard();
-			playerCount = playerCard.getValue();
-			System.out.println(playerCard);
+			playerCount += playerCard.getValue();
+			System.out.println(pCard1.toString() + "\n" 
+						+ pCard2.toString() + "\n" +playerCard);
+			
+			if(playerCount < blackjack) {
+				System.out.println("Cards value is: " + playerCount);
+				playerCount = player(pCard1, pCard2, deck, playerCount);
+			}
 			return playerCount;
 			
 		}
@@ -131,8 +166,8 @@ public class BlackjackApplication {
 		
 	}
 	
-	public void dealer() {
-		
+	public int dealer(Card dCard1, Card dCard2 , Deck deck, int dealerCount) {
+		int dealerHit = 17;
 		/*While less than 17
 		 * The dealers decisions are fix logic
 		 * If card total is greater than or 17, stay
@@ -141,6 +176,13 @@ public class BlackjackApplication {
 		 * 
 		 * return card value
 		 */
+		while(dealerCount < dealerHit) {
+			Card dealerCard = deck.dealCard();
+			dealerCount += dealerCard.getValue();
+			System.out.println();
+		}
+		
+		return dealerCount;
 	}
 
 }

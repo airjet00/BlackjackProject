@@ -12,13 +12,13 @@ public enum Rank {
 	
 	public int getValue() {
 		if(value == JACK.value) {
-			return (value +2);
+			return (value);   // was trying to do value +2 to find face cards
 		}
 		else if(value == QUEEN.value) {
-			return (value +3);
+			return (value);
 		}
 		else if(value == KING.value) {
-			return (value +4);
+			return (value);
 		}
 		else {
 			return value;
