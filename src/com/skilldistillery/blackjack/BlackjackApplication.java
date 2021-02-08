@@ -141,7 +141,7 @@ public class BlackjackApplication {
 ////			
 ////		}
 		
-		kb.close();
+	
 	}
 	public boolean playAnother() {
 		System.out.println("\nWould you like to play again? Y or N");
