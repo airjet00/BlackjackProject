@@ -45,6 +45,7 @@ public class BlackjackApplication {
 			int playerCount, dealerCount;
 			Deck deck = new Deck();
 		
+			System.out.println(deck.checkDeckSize());
 			deck.shuffle();
 			Card pCard1 = deck.dealCard();
 			Card dCard1 = deck.dealCard();
@@ -57,7 +58,9 @@ public class BlackjackApplication {
 			dealHand.addCard(dCard1);
 			dealHand.addCard(dCard2);
 			System.out.println();
-
+			
+			
+			
 			System.out.println("--------------");
 			System.out.println("| Your Cards |");
 			System.out.println("--------------");
@@ -65,6 +68,7 @@ public class BlackjackApplication {
 			System.out.println(playHand.toString() + playerCount);
 			//System.out.println(Rank.JACK.toString());
 
+			System.out.println(deck.checkDeckSize());
 	
 			System.out.println();
 		
@@ -104,23 +108,52 @@ public class BlackjackApplication {
 				playAgain = playAnother();
 			}
 			
+			System.out.println("\nDealer Shows:");
+			System.out.println(dCard1.toString() + "\n"
+								+dCard2.toString());
 			dealerCount = dealer(dCard1, dCard2, deck, dealerCount);
-			
+			if(dealHand.isBust(dealerCount)) {
+				System.out.println("Dealer Bust, YOU WIN");
+				playAgain = playAnother();
+			}
+			else {
+				if(playerCount > dealerCount) {
+					System.out.println("YOU WIN");
+					playAgain = playAnother();
+				}
+				else if(playerCount < dealerCount) {
+					System.out.println("YOU LOSE");
+					playAgain = playAnother();
+				}
+				else if (playerCount == dealerCount) {
+					System.out.println("PUSH (tie)");
+					playAgain = playAnother();
+				}
+				else {
+					System.out.println("Broken");
+				}
+			}
 		}
+		//System.out.println("Thank you for playing");
 //		pHand.isBust(playerCount);
 //		
 ////		if(playerCount > 21) {
 ////			
 ////		}
 		
-		
+		kb.close();
 	}
 	public boolean playAnother() {
 		System.out.println("\nWould you like to play again? Y or N");
 		String play = kb.next();
 		String plays = play.toUpperCase();
 		if (plays.equals("Y")) {
+			playHand.clear();
+			dealHand.clear();
 			play();
+		}
+		else {
+			System.out.println("Thank you for playing");
 		}
 		
 		return false;
@@ -151,7 +184,7 @@ public class BlackjackApplication {
 			Card playerCard = deck.dealCard();
 			playerCount += playerCard.getValue();
 			System.out.println(pCard1.toString() + "\n" 
-						+ pCard2.toString() + "\n" +playerCard);
+						+ pCard2.toString() + "\n" +playerCard.toString());
 			
 			if(playerCount < blackjack) {
 				System.out.println("Cards value is: " + playerCount);
@@ -180,9 +213,24 @@ public class BlackjackApplication {
 			Card dealerCard = deck.dealCard();
 			dealerCount += dealerCard.getValue();
 			System.out.println();
+			System.out.println("Dealer now has: ");
+			System.out.println(dCard1.toString()+ "\n"
+							+ dCard2.toString() + "\n"
+							+ dealerCard.toString());
+			System.out.println();
+			System.out.println("Dealer cards value is: " + dealerCount);
+//			if(dealHand.isBust(dealerCount)) {
+//				System.out.println("Dealer Bust");
+//				return dealerCount;
+//			}
 		}
 		
 		return dealerCount;
 	}
-
+	
+	public void winner(int playerCount, int dealerCount) {
+		
+	}
+	
+	
 }
